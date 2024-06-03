@@ -5,7 +5,7 @@ Brick::Brick(sf::Vector2f position)
 : mShape(sf::Vector2f(50.0f, 20.0f))
 , mIsAlive(true) 
 {
-    mShape.setFillColor(sf::Color::Green);
+    mShape.setFillColor(sf::Color(143, 48, 10));
     mShape.setPosition(position);
 }
 

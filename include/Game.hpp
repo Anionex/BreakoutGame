@@ -12,6 +12,7 @@ class Game {
 public:
     Game();
     void run();
+    int score;
 
 private:
     void processEvents();
@@ -27,6 +28,7 @@ private:
 
     bool mIsMovingLeft;
     bool mIsMovingRight;
+    sf::Font font1;
 };
 
 #endif // GAME_HPP

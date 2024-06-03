@@ -8,11 +8,12 @@ Game::Game()
     , mBall()
     , mIsMovingLeft(false)
     , mIsMovingRight(false)
+    , score(0)
 {
     // 初始化砖块
     for (int i = 0; i < 5; ++i) {
-        for (int j = 0; j < 10; ++j) {
-            mBricks.emplace_back(sf::Vector2f(j * 60.0f + 100.0f, i * 20.0f + 50.0f));
+        for (int j = 0; j < 10; ++j) if(!(i > 2 && 3 < j && j < 8)){
+            mBricks.emplace_back(sf::Vector2f(j * 60.0f + 100.0f + j * 2.0f, i * 20.0f + 50.0f + i * 2.0f));
         }
     }
 }
@@ -27,11 +28,15 @@ void Game::run() {
         // 处理字体加载失败
         return;
     }
+    if (!font1.loadFromFile("C:\\Windows\\Fonts\\arial.ttf")) {
+        // 处理字体加载失败
+        return;
+    }
     startText.setString("Game starts in 3 seconds...");
     startText.setCharacterSize(48);
     startText.setFillColor(sf::Color::Black);
-    startText.setPosition(300, 10); // 设置文本位置
-    // 等待3秒钟
+    startText.setPosition(400 - startText.getLocalBounds().width / 2.0f, 300  - startText.getLocalBounds().height / 2.0f); // 设置文本位置
+     //等待3秒钟
     while (startClock.getElapsedTime().asSeconds() < 3) {
         // 在等待期间可以显示一个开始画面或空循环
         sf::Color backgroundColor = sf::Color::White;
@@ -81,6 +86,7 @@ void Game::update(sf::Time deltaTime) {
         if (brick.isAlive() && mBall.getShape().getGlobalBounds().intersects(brick.getShape().getGlobalBounds())) {
             mBall.reboundBrick();
             brick.hit();
+            score += 1;
         }
     }
 }
@@ -95,6 +101,13 @@ void Game::render() {
             mWindow.draw(brick.getShape());
         }
     }
+    sf::Text scoreText;
+    scoreText.setFont(font1);
+    scoreText.setString((std::string)"Score: " + std::to_string(score));
+    scoreText.setCharacterSize(32);
+    scoreText.setFillColor(sf::Color::Black);
+    scoreText.setPosition(650, 10); // 设置文本位置
+    mWindow.draw(scoreText);
     mWindow.display();
 }
 

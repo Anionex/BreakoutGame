@@ -5,7 +5,7 @@ Paddle::Paddle()
 : mShape(sf::Vector2f(100.0f, 20.0f))
 , mSpeed(400.0f) 
 {
-    mShape.setFillColor(sf::Color::Red);
+    mShape.setFillColor(sf::Color(15, 32, 186));
     mShape.setPosition(350.0f, 550.0f);
 }
 
