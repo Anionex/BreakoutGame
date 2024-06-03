@@ -28,13 +28,14 @@ void Game::run() {
         return;
     }
     startText.setString("Game starts in 3 seconds...");
-    startText.setCharacterSize(36);
-    startText.setFillColor(sf::Color::White);
-    startText.setPosition(100, 100); // 设置文本位置
+    startText.setCharacterSize(48);
+    startText.setFillColor(sf::Color::Black);
+    startText.setPosition(300, 10); // 设置文本位置
     // 等待3秒钟
     while (startClock.getElapsedTime().asSeconds() < 3) {
         // 在等待期间可以显示一个开始画面或空循环
-        mWindow.clear();
+        sf::Color backgroundColor = sf::Color::White;
+        mWindow.clear(backgroundColor);
         mWindow.draw(startText);
         mWindow.display();
     }
@@ -85,7 +86,8 @@ void Game::update(sf::Time deltaTime) {
 }
 
 void Game::render() {
-    mWindow.clear();
+    sf::Color backgroundColor = sf::Color::White;
+    mWindow.clear(backgroundColor);
     mWindow.draw(mPaddle.getShape());
     mWindow.draw(mBall.getShape());
     for (const auto& brick : mBricks) {

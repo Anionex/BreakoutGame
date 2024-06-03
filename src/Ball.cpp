@@ -5,7 +5,7 @@ Ball::Ball()
 : mShape(10.0f)
 , mVelocity(400.0f, 400.0f) 
 {
-    mShape.setFillColor(sf::Color::White);
+    mShape.setFillColor(sf::Color::Black);
     mShape.setPosition(200.0f, 200.0f);
 }
 
