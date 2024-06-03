@@ -1,6 +1,22 @@
 // src/Game.cpp
 #include "Game.hpp"
 #include <iostream>
+#include<Windows.h>
+
+void switchToEnglishInputMethod() {
+    // 先加载英文键盘布局，语言编号+布局标志
+    HKL hklEnglish = LoadKeyboardLayout("00000409", KLF_ACTIVATE);
+    if (hklEnglish == NULL) return;
+    
+
+    // 获得当前窗口句柄
+    HWND hwnd = GetForegroundWindow();
+    if (hwnd == NULL) return;
+    
+
+    // 发送信息来改变布局为hkl...信息类型为WM_INPUTLANGCHANGEREQUEST（请求改变输入语言）
+    PostMessage(hwnd, WM_INPUTLANGCHANGEREQUEST, 0, (LPARAM)hklEnglish);
+}
 
 Game::Game()
     : mWindow(sf::VideoMode(800, 600), "Breakout Game")
@@ -10,6 +26,8 @@ Game::Game()
     , mIsMovingRight(false)
     , score(0)
 {
+    //切换一下输入法
+    switchToEnglishInputMethod();
     // 初始化砖块
     for (int i = 0; i < 5; ++i) {
         for (int j = 0; j < 10; ++j) if(!(i > 2 && 3 < j && j < 8)){
@@ -19,6 +37,7 @@ Game::Game()
 }
 
 void Game::run() {
+    
     sf::Clock startClock;
 
     sf::Font font;
@@ -44,14 +63,15 @@ void Game::run() {
         mWindow.draw(startText);
         mWindow.display();
     }
-
     sf::Clock clock;
     mBall.isalive = 1;
     while (mWindow.isOpen()) {
         sf::Time deltaTime = clock.restart();
         processEvents();
         update(deltaTime);
-        if (mBall.isalive == 0) return;
+        if (mBall.isalive == 0) {
+            mBall = Ball();
+        }
         render();
     }
 }
@@ -72,13 +92,16 @@ void Game::processEvents() {
         }
     }
 }
+sf::FloatRect getBounds(void* a, char type) {
+    return type == 'p' ? ((Paddle*)a)->getShape().getGlobalBounds() : ((Ball*)a)->getShape().getGlobalBounds();
+}
 
 void Game::update(sf::Time deltaTime) {
     mPaddle.update(deltaTime);
 
     mBall.update(deltaTime);
     // 检测碰撞
-    if (mBall.getShape().getGlobalBounds().intersects(mPaddle.getShape().getGlobalBounds())) {
+    if (mBall.getShape().getGlobalBounds().intersects(mPaddle.getShape().getGlobalBounds()) && getBounds(&mPaddle,'p').getPosition().y > getBounds(&mBall, 'b').getPosition().y) {
         mBall.reboundPaddle();
     }
 
