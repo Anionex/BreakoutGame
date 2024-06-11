@@ -3,19 +3,20 @@
 #define BALL_HPP
 
 #include <SFML/Graphics.hpp>
+using namespace sf;
 
 class Ball {
 public:
     Ball();
-    void update(sf::Time deltaTime);
+    void update(Time deltaTime);
     void reboundPaddle();
     void reboundBrick();
-    sf::CircleShape getShape();
+    CircleShape getShape();
     bool isalive;
 
 private:
-    sf::CircleShape mShape;
-    sf::Vector2f mVelocity;
+    CircleShape mShape;
+    Vector2f mVelocity;
     
 };
 

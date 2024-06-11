@@ -1,15 +1,16 @@
 // src/Ball.cpp
 #include "Ball.hpp"
+using namespace sf;
 
 Ball::Ball() 
 : mShape(10.0f)
 , mVelocity(400.0f, 400.0f) 
 {
-    mShape.setFillColor(sf::Color::Black);
+    mShape.setFillColor(Color::Black);
     mShape.setPosition(200.0f, 200.0f);
 }
 
-void Ball::update(sf::Time deltaTime) {
+void Ball::update(Time deltaTime) {
     mShape.move(mVelocity * deltaTime.asSeconds());
 
     if (mShape.getPosition().x < 0 || mShape.getPosition().x > 790) {
@@ -33,6 +34,6 @@ void Ball::reboundBrick() {
     mVelocity.y = -mVelocity.y;
 }
 
-sf::CircleShape Ball::getShape() {
+CircleShape Ball::getShape() {
     return mShape;
 }

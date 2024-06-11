@@ -3,32 +3,38 @@
 #define GAME_HPP
 
 #include <SFML/Graphics.hpp>
+using namespace sf;
 #include "Paddle.hpp"
 #include "Ball.hpp"
 #include "Brick.hpp"
 #include <vector>
+#include <iostream>
+#include<Windows.h>
+#include <string>
+#include "utils.hpp"
 
 class Game {
-public:
-    Game();
-    void run();
-    int score;
+    public:
+        Game();
+        void run();
+        int score, life;
+        const int totalBrick;
 
-private:
-    void processEvents();
-    void update(sf::Time deltaTime);
-    void render();
+    private:
+        void processEvents();
+        void update(Time deltaTime);
+        void render();
 
-    void handlePlayerInput(sf::Keyboard::Key key, bool isPressed);
+        void handlePlayerInput(Keyboard::Key key, bool isPressed);
 
-    sf::RenderWindow mWindow;
-    Paddle mPaddle;
-    Ball mBall;
-    std::vector<Brick> mBricks;
+        RenderWindow mWindow;
+        Paddle mPaddle;
+        Ball mBall;
+        std::vector<Brick> mBricks;
 
-    bool mIsMovingLeft;
-    bool mIsMovingRight;
-    sf::Font font1;
+        bool mIsMovingLeft;
+        bool mIsMovingRight;
+        Font font1;
 };
 
 #endif // GAME_HPP

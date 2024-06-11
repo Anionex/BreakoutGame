@@ -2,8 +2,8 @@
 project(BreakoutGame)
 
 set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_TOOLCHAIN_FILE "C:/Users/10051/Desktop/vcpkg/scripts/buildsystems/vcpkg.cmake")
-set(SFML_DIR "C:/Users/10051/Desktop/vcpkg/packages/sfml_x64-windows/share/sfml")
+set(CMAKE_TOOLCHAIN_FILE "${VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake")
+set(SFML_DIR "${VCPKG_ROOT}/packages/CSFML/share/sfml")
 find_package(SFML 2.5 COMPONENTS system window graphics network audio REQUIRED)
 
 include_directories(include)

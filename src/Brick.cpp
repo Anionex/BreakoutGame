@@ -1,11 +1,12 @@
 // src/Brick.cpp
 #include "Brick.hpp"
+using namespace sf;
 
-Brick::Brick(sf::Vector2f position) 
-: mShape(sf::Vector2f(50.0f, 20.0f))
+Brick::Brick(Vector2f position) 
+: mShape(Vector2f(50.0f, 20.0f))
 , mIsAlive(true) 
 {
-    mShape.setFillColor(sf::Color(143, 48, 10));
+    mShape.setFillColor(Color(143, 48, 10));
     mShape.setPosition(position);
 }
 
@@ -17,6 +18,6 @@ bool Brick::isAlive() const {
     return mIsAlive;
 }
 
-sf::RectangleShape Brick::getShape()const {
+RectangleShape Brick::getShape()const {
     return mShape;
 }

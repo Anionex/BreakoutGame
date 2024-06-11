@@ -3,17 +3,18 @@
 #define BRICK_HPP
 
 #include <SFML/Graphics.hpp>
+using namespace sf;
 
 class Brick {
-public:
-    Brick(sf::Vector2f position);
-    void hit();
-    bool isAlive() const;
-    sf::RectangleShape getShape() const;
+    public:
+        Brick(Vector2f position);
+        void hit();
+        bool isAlive() const;
+        RectangleShape getShape() const;
 
-private:
-    sf::RectangleShape mShape;
-    bool mIsAlive;
+    private:
+        RectangleShape mShape;
+        bool mIsAlive;
 };
 
 #endif // BRICK_HPP
