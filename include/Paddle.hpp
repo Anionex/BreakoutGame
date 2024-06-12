@@ -1,17 +1,15 @@
-// include/Paddle.hpp
-#ifndef PADDLE_HPP
-#define PADDLE_HPP
+#pragma once
+
 #include <SFML/Graphics.hpp>
+#include "GameObject.hpp"
 using namespace sf;
-class Paddle {
+
+class Paddle : public GameObject {
 public:
-    Paddle();
-    void update(Time deltaTime);
-    RectangleShape getShape();
+    Paddle(Vector2f pos, Vector2f velocity);
+    Paddle(Vector2f pos, Vector2f velocity, int hp);
+    void update(float deltaTime);
+    void draw(RenderWindow& window);
 
 private:
-    RectangleShape mShape;
-    float mSpeed;
 };
-
-#endif // PADDLE_HPP

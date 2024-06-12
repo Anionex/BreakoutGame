@@ -16,6 +16,16 @@ void switchToEnglishInputMethod() {
     // 发送信息来改变布局为hkl...信息类型为WM_INPUTLANGCHANGEREQUEST（请求改变输入语言）
     PostMessage(hwnd, WM_INPUTLANGCHANGEREQUEST, 0, (LPARAM)hklEnglish);
 }
+#define v2f Vector2f
+void showTextDefult(RenderWindow& window, ResourceManager& rm, const std::string content,int size, v2f pos)
+{
+	Text text(content, rm.getFont("main"));
+	text.setPosition(pos);
+	text.setFillColor(Color::Black);
+	window.draw(text);
+	window.display();
+	return;
+}
 
 Text initText(const std::string &fontPath,const std::string &content, int size, const Color &color) {
 	Font font;

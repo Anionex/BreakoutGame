@@ -1,23 +1,18 @@
-// include/Ball.hpp
-#ifndef BALL_HPP
-#define BALL_HPP
+#pragma once
 
 #include <SFML/Graphics.hpp>
+#include "GameObject.hpp"
 using namespace sf;
 
-class Ball {
+class Ball : public GameObject {
 public:
-    Ball();
-    void update(Time deltaTime);
-    void reboundPaddle();
-    void reboundBrick();
-    CircleShape getShape();
-    bool isalive;
+    Ball(Vector2f pos, Vector2f velocity);
+    Ball(Vector2f pos, Vector2f velocity, int hp);
+    Ball(Vector2f pos, Vector2f velocity, int hp, const Texture& texture);
+    void update(float deltaTime);
+    void draw(RenderWindow& window);
+    void verticalRebound();
+    void horizentalRebound();
 
 private:
-    CircleShape mShape;
-    Vector2f mVelocity;
-    
 };
-
-#endif // BALL_HPP

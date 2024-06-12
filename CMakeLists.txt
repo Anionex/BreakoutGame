@@ -12,3 +12,9 @@ file(GLOB SOURCES "src/*.cpp")
 add_executable(BreakoutGame ${SOURCES})
 
 target_link_libraries(BreakoutGame sfml-system sfml-window sfml-graphics sfml-network sfml-audio)
+
+add_custom_command(
+    TARGET BreakoutGame POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+    ${CMAKE_SOURCE_DIR}/resources $<TARGET_FILE_DIR:BreakoutGame>/resources
+)

@@ -1,20 +1,19 @@
-// include/Brick.hpp
-#ifndef BRICK_HPP
-#define BRICK_HPP
+#pragma once
 
 #include <SFML/Graphics.hpp>
+#include "GameObject.hpp"
 using namespace sf;
 
-class Brick {
-    public:
-        Brick(Vector2f position);
-        void hit();
-        bool isAlive() const;
-        RectangleShape getShape() const;
+class Brick : public GameObject{
+public:
+    Brick(Vector2f pos, Vector2f velocity);
+    Brick(Vector2f pos, Vector2f velocity, int hp);
+    Brick(Vector2f pos, Vector2f velocity, int hp, const Texture& texture);
+    void update(float deltaTime);
+    void draw(RenderWindow& window);
+    void hit();
 
-    private:
-        RectangleShape mShape;
-        bool mIsAlive;
+private:
 };
 
-#endif // BRICK_HPP
+

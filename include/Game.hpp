@@ -1,5 +1,5 @@
 // include/Game.hpp
-#ifndef GAME_HPP
+#pragma once
 #define GAME_HPP
 
 #include <SFML/Graphics.hpp>
@@ -7,34 +7,43 @@ using namespace sf;
 #include "Paddle.hpp"
 #include "Ball.hpp"
 #include "Brick.hpp"
+#include "GameObject.hpp"
 #include <vector>
 #include <iostream>
 #include<Windows.h>
 #include <string>
 #include "utils.hpp"
+#include "Menu.hpp"
+#include "ResourceManager.hpp"
+#include "GameState.hpp"
 
 class Game {
     public:
         Game();
         void run();
-        int score, life;
-        const int totalBrick;
+        
 
     private:
+
+        void runSinglePlayer();
+        void runDemo();
+        void runSettings();
+
         void processEvents();
-        void update(Time deltaTime);
-        void render();
+        // ball, paddle, bricks的更新
+        void update(float deltaTime);  
+        // 各种对象的渲染
+        void render();  
 
-        void handlePlayerInput(Keyboard::Key key, bool isPressed);
+        RenderWindow window;
+		ResourceManager rm;
+        GameState gameState;
+        Menu menu;
 
-        RenderWindow mWindow;
-        Paddle mPaddle;
-        Ball mBall;
-        std::vector<Brick> mBricks;
+        Paddle paddle;
+        Ball ball;
+        std::vector<Brick> bricks;
 
-        bool mIsMovingLeft;
-        bool mIsMovingRight;
-        Font font1;
+
 };
 
-#endif // GAME_HPP
