@@ -1,37 +1,43 @@
 #include "Menu.hpp"
-#define v2f Vector2f
 # include<iostream>
-
-
-const Color Menu::buttonBackgoundColor=Color(10, 10, 10, 0);
+#include<utils.hpp>
+#include<SFML/Graphics.hpp>
+#include "GameState.hpp"
+using namespace sf;
+const Color Menu::buttonBackgoundColor=Color(0xD6, 0x98, 0x39);
 const Color Menu::shadowColor=Color(0, 0, 0, 150);
-
-Menu::Menu(){}
+#define v2f Vector2f
+Menu::Menu():currentSelection(None) {}
 
 Menu::Menu(ResourceManager& resourceManager) :
 	currentSelection(None), 
-	titleText("Breakout Game", resourceManager.getFont("main"), 48)
+	titleText("Breakout Game", resourceManager.getFont("main"), 64)
 {
-	titleText.setFillColor(Color::White);
+	titleText.setFillColor(Color::Black);
 	titleText.setPosition(200.f, 100.f);
 
 	std::vector<std::string> items = { "Single Player", "Demo", "Settings" };
-	float yPos = 200.f;
+	float yPos = 230.f;
 
 	for (const auto& item : items) {
-		sf::Text text(item, resourceManager.getFont("main"), 24);
+		sf::Text text(item, resourceManager.getFont("main"), 48);
 		text.setFillColor(Color::Black);
 		text.setPosition(250.f, yPos);
-
+		/*
 		FloatRect bounds = text.getGlobalBounds();
-		RectangleShape background(v2f(bounds.width + 20, bounds.height + 10));
+		RectangleShape background(v2f(bounds.width + 20, bounds.height + 10);
 		background.setPosition(v2f(text.getPosition().x - 10.f, text.getPosition().y - 5));
-		background.setFillColor(sf::Color::White);
+		background.setFillColor(Color(0, 0, 0, 255));
 
 		menuItems.push_back(text);
-		itemBackgrounds.push_back(background);
+		itemBackgrounds.push_back(background);*/
+		
+		// 添加按钮
+		Button button(v2f(GameState::windowSize.x / 2, yPos), item, 64, resourceManager.getFont("main"), Color::Black);
+		menuItems.push_back(button);
+		
 
-		yPos += 50.f;
+		yPos += 100.f;
 	}
 
 }
@@ -41,6 +47,8 @@ Menu::Selection Menu::show(RenderWindow& window) {
 	
 	while (window.isOpen()) {
 		
+		window.draw(titleText);
+			
 		// 处理事件
 		Event event;
 		while (window.pollEvent(event)) {
@@ -57,7 +65,7 @@ Menu::Selection Menu::show(RenderWindow& window) {
 				return currentSelection;
 			
 		}
-		window.clear(Color::White);
+		window.clear(Color::White), window.draw(GameState::background);
 		draw(window);
 		window.display();
 	}
@@ -66,35 +74,32 @@ Menu::Selection Menu::show(RenderWindow& window) {
 	return None;
 }
 
+void Menu::setDefult()
+{
+	currentSelection = None;
+	return;
+}
+
 void Menu::draw(RenderWindow& window) {
 	window.clear(Color::White);
 	window.draw(titleText);
 
-	for (int i = 0; i < menuItems.size(); i++) {
-		window.draw(itemBackgrounds[i]);
-		if (itemBackgrounds[i].getFillColor() == Color::Black) {
-			std::cout << "blakc" << std::endl;
-		}
-		window.draw(menuItems[i]);
+	for (auto& item: menuItems) {
+		item.draw(window);
 	}
 }
 
 void Menu::processEvent(Event event, RenderWindow& window) {
-	 
-	v2f mousePos = v2f(Mouse::getPosition(window));
-	for (int i = 0; i < menuItems.size(); i++) {
+	
+	int i = 0;
+	for (auto& item: menuItems) {
+		++i;
 		if (event.type == Event::MouseMoved){
-			if (menuItems[i].getGlobalBounds().contains(mousePos)) {
-				itemBackgrounds[i].setFillColor(shadowColor);
-				std::cout << "within rect" << std::endl;
-			} else 
-				itemBackgrounds[i].setFillColor(sf::Color::White);
-			
+			item.update(window);
 		}
-
-		if (event.type == Event::MouseButtonPressed && event.mouseButton.button == Mouse::Left) {
-			std::cout << "click" << std::endl;
-			currentSelection = static_cast<Selection>(i + 1);
+		if (item.isClicked(window)) {
+			//std::cout << "click" << std::endl;
+			currentSelection = static_cast<Selection>(i);
 			return;
 		}
 	}

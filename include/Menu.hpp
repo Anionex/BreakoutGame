@@ -6,24 +6,26 @@
 using namespace sf;
 #include <vector>
 #include <string>
-#include "ResourceManager.hpp"
+#include"Button.hpp"
 
+class Button;
 class Menu {
 public:
 	enum Selection { None, mode1, mode2, settings };
 	Menu();
 	Menu(ResourceManager& resourceManager);
 	Selection show(RenderWindow& Window);
+	static const Color buttonBackgoundColor;
+	static const Color shadowColor;
+	void setDefult();
 
 private:
 	void draw(RenderWindow& window);
 	void processEvent(Event event, RenderWindow& window);
 
 	Text titleText;
-	std::vector<Text> menuItems;
-	std::vector<RectangleShape> itemBackgrounds;
+	std::vector<Button> menuItems;
 	Selection currentSelection;;
-	static const Color buttonBackgoundColor;
-	static const Color shadowColor;
+	
 
 };

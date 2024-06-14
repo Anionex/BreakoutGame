@@ -1,10 +1,6 @@
 #include "GameObject.hpp"
 
-GameObject::GameObject(Vector2f pos, Vector2f velocity)
-{
-	this->pos = pos;
-	this->velocity = velocity;
-}
+
 
 GameObject::GameObject(Vector2f pos, Vector2f velocity, int hp)
 {

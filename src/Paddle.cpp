@@ -34,7 +34,9 @@ Paddle::Paddle(Vector2f pos, Vector2f velocity, int hp): GameObject(pos, velocit
 void Paddle::update(float deltaTime)
 {
 	if (Keyboard::isKeyPressed(Keyboard::A)) velocity = v2f(-GameState::initPaddleV.x, -GameState::initPaddleV.y);
+	else
 	if (Keyboard::isKeyPressed(Keyboard::D))velocity = GameState::initPaddleV;
+	else velocity = v2f(0, 0);
 	
 	if (Keyboard::isKeyPressed(Keyboard::A) || Keyboard::isKeyPressed(Keyboard::D)) {
 		pos.x += velocity.x * deltaTime;

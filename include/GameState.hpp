@@ -7,10 +7,13 @@ class GameState {
 public:
 	GameState(int life, int mode, int round);
 
-	static const v2f initBallV, initPaddleV, windowSize;
-	static const v2f initBallPos, paddlePos;
-	static const int initLife;
+	static v2f initBallV, initPaddleV, windowSize;
+	static v2f initBallPos, paddlePos;
+	static int initLife;
+	static v2f ballAcceleration, ballMaxSpeed;
 
 	int score, life, mode, round;
-	const int totalBrick;
+	static int totalBrick;
+	static RectangleShape background;
 };
+
