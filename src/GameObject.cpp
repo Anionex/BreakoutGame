@@ -2,6 +2,14 @@
 
 
 
+GameObject::GameObject()
+{
+}
+
+GameObject::GameObject(Vector2f pos, Vector2f velocity)
+{
+}
+
 GameObject::GameObject(Vector2f pos, Vector2f velocity, int hp)
 {
 	this->pos = pos; // 

@@ -20,6 +20,10 @@ using namespace sf;
 //}
 
 
+Paddle::Paddle()
+{
+}
+
 Paddle::Paddle(Vector2f pos, Vector2f velocity): Paddle(pos, velocity, 0)
 {
 	return;

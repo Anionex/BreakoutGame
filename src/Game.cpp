@@ -9,10 +9,7 @@ using namespace sf;
 Game::Game()
     : 
     window(VideoMode(GameState::windowSize.x, GameState::windowSize.y), "Breakout Game"),
-    gameState(GameState::initLife, 0, 0),
-	rm(),
-    paddle(GameState::paddlePos, GameState::initPaddleV),
-    ball(GameState::initBallPos, GameState::initBallV, 1) //这里有一点别扭，因为并不是所有mode都要用到ball和paddle, TODO考虑职责专一化
+	rm()
 {
     
     // 加载字体
@@ -53,31 +50,39 @@ void Game::run()
     //std::cout << "end run() with mode : " <<  selection << std::endl;
 }
 
-void Game::runSinglePlayer() {
+void Game::initObject()
+{
+    //初始化paddle和ball
+    paddle = Paddle(GameState::paddlePos, GameState::initPaddleV),
+       ball = Ball(GameState::initBallPos, GameState::initBallV, 1);//这里有一点别扭，因为并不是所有mode都要用到ball和paddle, TODO考虑职责专一化;
     //设置纹理
-    std::cout << "at runsingle" << std::endl;
+    
     ball.sprite.setTexture(rm.getTexture("ball"));
     paddle.sprite.setTexture(rm.getTexture("paddle"));
     paddle.sprite.setScale(1.5, 1.5);
     ball.sprite.setScale(0.75, 0.75);
-	ball.accelarate = GameState::ballAcceleration;
-    
-    //常用量定义
-    const v2f middle(window.getSize().x / 2, window.getSize().y / 2);
+    ball.accelarate = GameState::ballAcceleration;
+    bricks.clear();
 
     // 初始化砖块
 
     for (int i = 0; i < 5; ++i) {
-        for (int j = 0; j < 10; ++j) 
+        for (int j = 0; j < 10; ++j)
             if (!(i > 2 && 3 < j && j < 6) && !(i == 0 && (j < 1 || j > 8))) {
-            bricks.emplace_back(Brick(v2f(j * 60.0f + 100.0f + j * 2.0f, i * 20.0f + 50.0f + i * 5.0f), v2f(0, 0), 1, rm.getTexture("brick")));
-        }
+                bricks.emplace_back(Brick(v2f(j * 60.0f + 100.0f + j * 2.0f, i * 20.0f + 50.0f + i * 5.0f), v2f(0, 0), 1, rm.getTexture("brick")));
+            }
     }
-	GameState::totalBrick = bricks.size();
+    GameState::totalBrick = bricks.size();
+}
+
+void Game::runSinglePlayer() {
+    gameState = GameState(GameState::initLife, 0, 0);
+    gameState.score = 0;
+    std::cout << "at runsingle" << std::endl;
+    initObject();
     
-
-
-
+    //常用量定义
+    const v2f middle(window.getSize().x / 2, window.getSize().y / 2);
 
 
     // 显示还有preparetime开始游戏
@@ -104,7 +109,10 @@ void Game::runSinglePlayer() {
         float deltaTimeSec = deltaTime.asSeconds();
         
 		// 单独处理back按钮 TODO
-		if (backButton.isClicked(window)) return;
+        if (backButton.isClicked(window)) {
+            initObject();
+			return;
+        }
         processEvents();
 
         backButton.update(window);
@@ -271,7 +279,7 @@ void Game::runSettings()
 		window.draw(initLifeText);
 
         // cout 新的initLife
-		std::cout << "initLife: " << GameState::initLife << std::endl;
+		//std::cout << "initLife: " << GameState::initLife << std::endl;
 
 		window.display();
 	}
@@ -333,8 +341,8 @@ void Game::processEvents() {
         gameState.life -= 1;
         if (gameState.life == 0) {
             // 游戏结束
-            window.clear(Color::White), window.draw(background), drawTextDefult(window, rm, "Game Over\n Press R to restart", 88, middle);
-            
+            window.clear(Color::White), window.draw(background), drawTextDefult(window, rm, "Game \n Press R to restart", 88, middle);
+			window.display();
 			bool choice = false;
 			// 按R重新开始游戏
             while (window.isOpen()) {
@@ -367,12 +375,34 @@ void Game::processEvents() {
         
     }
 
-    // 通关逻辑
-    //if (gameState.score == gameState./*totalBrick * 2) {
-    //    window.clear(Color::White),window.draw(background), drawTextDefult(window, rm, "You Win", 88, middle);
-    //    Sleep(3000);
-    //    window.close();
-    //}*/
+     //通关逻辑
+    if (gameState.score == gameState.totalBrick) {
+        window.clear(Color::White),window.draw(background), drawTextDefult(window, rm, "You Win\nPress R to restart", 88, middle);
+        bool choice = false;
+        window.display();
+        // 按R重新开始游戏
+        while (window.isOpen()) {
+
+            if (Keyboard::isKeyPressed(Keyboard::R)) {
+                gameState.life = GameState::initLife;
+                gameState.score = 0;
+                // 重新初始化砖块
+                for (auto& brick : bricks) brick.hp = 1;
+
+                //重新初始化挡板
+                paddle = Paddle(GameState::paddlePos, GameState::initPaddleV);
+                paddle.sprite.setTexture(rm.getTexture("paddle"));
+                paddle.sprite.setScale(1.5, 1.5);
+
+
+
+                choice = 1;
+                break;
+            }
+        }
+        // 如果玩家选择退出游戏
+        if (!choice)window.close();
+    }
 }
 float& min(float a, float b) {
 	return a < b ? a : b;
@@ -388,7 +418,7 @@ void Game::update(float deltaTime)
 	if (ball.velocity.x * ball.velocity.x + ball.velocity.y * ball.velocity.y > 
         GameState::ballMaxSpeed.x * GameState::ballMaxSpeed.x + GameState::ballMaxSpeed.y * GameState::ballMaxSpeed.y) ball.accelarate = v2f(0, 0);
     ball.update(deltaTime);
-	std::cout << ball.velocity.x << " " << ball.velocity.y << std::endl;
+	//std::cout << ball.velocity.x << " " << ball.velocity.y << std::endl;
 	
     paddle.update(deltaTime);
     for (auto& brick : bricks) brick.update(deltaTime);

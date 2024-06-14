@@ -62,3 +62,5 @@ bool Ball::collidWith(const GameObject& B)
 	}
 	return false;
 }
+
+Ball::Ball(){}

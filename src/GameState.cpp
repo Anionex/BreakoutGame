@@ -10,7 +10,12 @@
 int GameState::totalBrick;
 RectangleShape GameState::background;
 
-
+GameState::GameState() {
+	life = initLife;
+	mode = 0;
+	round = 0;
+	score = 0;
+}
 GameState::GameState(int life, int mode, int round) {
 	this->life = life;
 	this->mode = mode;

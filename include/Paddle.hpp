@@ -6,6 +6,7 @@ using namespace sf;
 
 class Paddle : public GameObject {
 public:
+    Paddle();
     Paddle(Vector2f pos, Vector2f velocity);
     Paddle(Vector2f pos, Vector2f velocity, int hp);
     void update(float deltaTime);

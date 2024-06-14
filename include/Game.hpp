@@ -21,10 +21,10 @@ class Game {
     public:
         Game();
         void run();
-        
+        void initObject();
 
     private:
-
+        
         void runSinglePlayer();
         void runDemo();
         void runSettings();

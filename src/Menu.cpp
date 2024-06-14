@@ -23,14 +23,6 @@ Menu::Menu(ResourceManager& resourceManager) :
 		sf::Text text(item, resourceManager.getFont("main"), 48);
 		text.setFillColor(Color::Black);
 		text.setPosition(250.f, yPos);
-		/*
-		FloatRect bounds = text.getGlobalBounds();
-		RectangleShape background(v2f(bounds.width + 20, bounds.height + 10);
-		background.setPosition(v2f(text.getPosition().x - 10.f, text.getPosition().y - 5));
-		background.setFillColor(Color(0, 0, 0, 255));
-
-		menuItems.push_back(text);
-		itemBackgrounds.push_back(background);*/
 		
 		// Ìí¼Ó°´Å¥
 		Button button(v2f(GameState::windowSize.x / 2, yPos), item, 64, resourceManager.getFont("main"), Color::Black);
@@ -43,7 +35,6 @@ Menu::Menu(ResourceManager& resourceManager) :
 }
 
 Menu::Selection Menu::show(RenderWindow& window) {
-	
 	
 	while (window.isOpen()) {
 		
@@ -65,7 +56,8 @@ Menu::Selection Menu::show(RenderWindow& window) {
 				return currentSelection;
 			
 		}
-		window.clear(Color::White), window.draw(GameState::background);
+		window.clear(Color::White);
+		window.draw(GameState::background);
 		draw(window);
 		window.display();
 	}
@@ -81,7 +73,6 @@ void Menu::setDefult()
 }
 
 void Menu::draw(RenderWindow& window) {
-	window.clear(Color::White);
 	window.draw(titleText);
 
 	for (auto& item: menuItems) {

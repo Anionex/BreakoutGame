@@ -5,6 +5,7 @@ using namespace sf;
 
 class GameState {
 public:
+	GameState();
 	GameState(int life, int mode, int round);
 
 	static v2f initBallV, initPaddleV, windowSize;

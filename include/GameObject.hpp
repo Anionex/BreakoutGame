@@ -10,6 +10,7 @@ using namespace sf;
 // 每个sfml物体继承一个基类，共有常见属性位置速度声明等
 class GameObject {
 public:
+	GameObject();
 	GameObject(Vector2f pos, Vector2f velocity);
 	GameObject(Vector2f pos,  Vector2f velocity,  int hp);
 	Vector2f pos, velocity;
