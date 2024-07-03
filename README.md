@@ -1,7 +1,4 @@
 # BrekoutGame
-### 作者
-杨丁玮（暨南大学）
-
 
 #### 项目仓库地址
 https://github.com/Anionex/BreakoutGame
